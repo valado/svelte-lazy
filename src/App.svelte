@@ -1,10 +1,21 @@
 <script lang="ts">
 	export let name: string;
+	let counter: number = 0;
+
+	$: doubled = counter * 2;
+
+	const countUp = () => {
+		counter += 1;
+	}
 </script>
 
 <main>
 	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<h1>Counter: {counter}</h1>
+	<h1>Doubled: {doubled}</h1>
+	<button on:click={countUp}>
+		Count up
+	</button>
 </main>
 
 <style>
