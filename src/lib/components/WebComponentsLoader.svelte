@@ -1,7 +1,7 @@
 <script lang="ts">
   export let tag: string;
   export let url: string;
-  export let isModule: boolean = false;
+  export let isModule: boolean | undefined = false;
 
   type Hook = (tag: string) => Promise<void> | void;
   interface Notifier {
@@ -22,7 +22,7 @@
   };
 
   const stripUrlProtocol = (url: string): string => {
-    return url.replace(/https?:\/\//, "");
+    return url.replace(/https?:\/\//, '');
   };
 
   const hasElement = (url: string): boolean => {
@@ -56,9 +56,9 @@
     if (!hasElement(url)) {
       const notifier = addElement(url);
 
-      const script = document.createElement("script") as HTMLScriptElement;
+      const script = document.createElement('script') as HTMLScriptElement;
       if (isModule) {
-        script.type = "module";
+        script.type = 'module';
       }
       script.src = url;
       const onLoad = () => {
@@ -83,11 +83,11 @@
       // The `load` and `error` event listeners capture `this`. That's why they have to be removed manually.
       // Otherwise, the `LazyElementsLoaderService` is not going to be GC'd.
       function cleanup() {
-        script.removeEventListener("load", onLoad);
-        script.removeEventListener("error", onError);
+        script.removeEventListener('load', onLoad);
+        script.removeEventListener('error', onError);
       }
-      script.addEventListener("load", onLoad);
-      script.addEventListener("error", onError);
+      script.addEventListener('load', onLoad);
+      script.addEventListener('error', onError);
       if (beforeLoadHook) {
         handleHook(beforeLoadHook, tag)
           .then(() => document.body.appendChild(script))
